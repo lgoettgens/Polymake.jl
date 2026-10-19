@@ -14,7 +14,7 @@ function call_function(::Type{PropertyValue}, app::Symbol, func::Symbol, args...
     cargs = Meta.polymake_arguments(args...; kwargs...)
     templ = CxxWrap.StdVector{CxxWrap.StdString}()
     append!(templ, StdString.(template_parameters))
-    return disable_sigint() do
+    return without_sigint() do
         if calltype == :void
             internal_call_function_void(fname, templ, cargs)
             return nothing
@@ -54,7 +54,7 @@ function call_method(::Type{PropertyValue}, obj::BigObject, func::Symbol, args..
     calltype::Symbol=:scalar, kwargs...)
     fname = string(func)
     cargs = Meta.polymake_arguments(args...; kwargs...)
-    return disable_sigint() do
+    return without_sigint() do
         if calltype == :void
             internal_call_method_void(fname, obj, cargs)
             return nothing

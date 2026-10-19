@@ -1,3 +1,9 @@
+@static if isdefined(Base, :CANCEL_TOKEN) # since 1.14.0-DEV
+    without_sigint(f) = Base.ScopedValues.with(f, Base.CANCEL_TOKEN => nothing)
+else
+    without_sigint(f) = disable_sigint(f)
+end
+
 to_one_based_indexing(n::Number) = n + one(n)
 to_zero_based_indexing(n::Number) = (n > zero(n) ? n - one(n) : throw(ArgumentError("Can't use negative index")))
 

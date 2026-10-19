@@ -89,7 +89,7 @@ Base.setproperty!(obj::BigObject, prop::String, val) = setproperty!(obj, Symbol(
 
 function give(obj::BigObject, prop::Union{Symbol,String})
     return_obj = try
-        disable_sigint() do
+        without_sigint() do
             internal_give(obj, prop)
         end
     catch ex
