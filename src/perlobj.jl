@@ -94,7 +94,8 @@ function give(obj::BigObject, prop::Union{Symbol,String})
         end
     catch ex
         ex isa ErrorException && rethrow(PolymakeError(ex.msg))
-        if (ex isa InterruptException)
+        # with `CANCEL_TOKEN`, ^C is delivered only after `without_sigint` returns
+        if !isdefined(Base, :CANCEL_TOKEN) && ex isa InterruptException
             @warn """Interrupting polymake is not safe.
             SIGINT is disabled while waiting for polymake to finish its computations."""
         end
